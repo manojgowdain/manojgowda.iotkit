@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Layers3, PenLine } from "lucide-react";
+import { getPublishedPosts, getPublishedProjects } from "../lib/content";
 
 const highlights = [
   {
@@ -25,7 +26,29 @@ const highlights = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [projectsResult, postsResult] = await Promise.all([getPublishedProjects(), getPublishedPosts()]);
+  const projects = projectsResult.items;
+  const posts = postsResult.items;
+  const contentSetupRequired =
+    projectsResult.setupRequired === "configuration" || postsResult.setupRequired === "configuration"
+      ? "configuration"
+      : projectsResult.setupRequired || postsResult.setupRequired;
+  const recentContent = [
+    ...projects.filter((project) => project.is_featured).slice(0, 2).map((item) => ({
+      ...item,
+      type: "project",
+      href: `/projects/${item.slug}`,
+      excerpt: item.summary,
+    })),
+    ...posts.slice(0, 2).map((item) => ({
+      ...item,
+      type: "post",
+      href: `/blog/${item.slug}`,
+      excerpt: item.excerpt,
+    })),
+  ].slice(0, 3);
+
   return (
     <main>
       <section className="hero section-wrap">
@@ -71,6 +94,15 @@ export default function Home() {
         </div>
       </section>
 
+      {contentSetupRequired && (
+        <div className="section-wrap setup-notice" role="status">
+          {contentSetupRequired === "configuration"
+            ? "Supabase rejected the configured API key. Check the publishable/anon key in .env.local and restart the site."
+            : "Projects and writing will appear here after the Supabase content migration is applied."}
+          <a href="https://supabase.com/dashboard" target="_blank" rel="noreferrer">Open Supabase <ArrowUpRight size={13} aria-hidden="true" /></a>
+        </div>
+      )}
+
       <section className="explore-section section-wrap" id="explore">
         <div className="section-heading">
           <div>
@@ -93,6 +125,28 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {recentContent.length > 0 && (
+        <section className="recent-section section-wrap">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">Fresh from the desk</p>
+              <h2>Recent work & words.</h2>
+            </div>
+            <Link className="text-link" href="/blog">Browse everything <ArrowRight size={15} aria-hidden="true" /></Link>
+          </div>
+          <div className="content-grid">
+            {recentContent.map((item) => (
+              <Link className="content-card" href={item.href} key={`${item.type}-${item.id}`}>
+                <span className="content-card-meta">{item.type === "project" ? "FEATURED PROJECT" : "WRITING"}</span>
+                <h2>{item.title}</h2>
+                <p>{item.excerpt}</p>
+                <span className="content-card-link">Read more <ArrowRight size={15} aria-hidden="true" /></span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="home-contact">
         <div className="section-wrap contact-banner">

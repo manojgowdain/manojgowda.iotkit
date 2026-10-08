@@ -9,7 +9,7 @@ export default function SiteFooter() {
       <div className="section-wrap footer-main">
         <div className="footer-brand">
           <Link className="wordmark footer-wordmark" href="/">
-            <span className="wordmark-mark">M<span>.</span></span>
+            <img className="wordmark-logo" src="https://cdn.manojgowda.qzz.io/manojgowdaimg.svg" alt="" />
             <span className="wordmark-name">manoj gowda</span>
           </Link>
           <p>A small corner of the internet for things worth building and sharing.</p>

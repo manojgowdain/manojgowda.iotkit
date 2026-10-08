@@ -26,7 +26,7 @@ export default async function AdminLoginPage({ searchParams }) {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error && /invalid api key/i.test(error.message)) {
       authConfigurationError = true;
-    } else if (error) {
+    } else if (error && error.name !== "AuthSessionMissingError") {
       throw new Error("Unable to verify your Supabase session.", { cause: error });
     }
     if (user) {

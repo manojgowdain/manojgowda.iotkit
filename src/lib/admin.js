@@ -8,7 +8,7 @@ export async function requireAdmin() {
     error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError) {
+  if (userError && userError.name !== "AuthSessionMissingError") {
     throw new Error("Unable to verify your Supabase session.", { cause: userError });
   }
 

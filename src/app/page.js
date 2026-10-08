@@ -1,69 +1,111 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Layers3, PenLine } from "lucide-react";
+
+const highlights = [
+  {
+    number: "01",
+    title: "Selected projects",
+    description: "A home for useful things I've built and ideas I've brought to life.",
+    href: "/projects",
+    icon: Layers3,
+  },
+  {
+    number: "02",
+    title: "Notes & writing",
+    description: "Practical notes, lessons learned, and thoughts worth sharing.",
+    href: "/blog",
+    icon: PenLine,
+  },
+  {
+    number: "03",
+    title: "The craft",
+    description: "A little about the tools and principles behind the work.",
+    href: "/contact",
+    icon: Code2,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.js
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main>
+      <section className="hero section-wrap">
+        <div className="hero-copy">
+          <p className="eyebrow"><span className="status-dot" /> A personal corner of the internet</p>
+          <h1>Making the web a little more <span>thoughtful.</span></h1>
+          <p className="hero-description">
+            I&apos;m Manoj Gowda. This is where I share the projects I&apos;m working on,
+            the things I&apos;m learning, and ideas I hope are useful to someone else.
+          </p>
+          <div className="hero-actions">
+            <Link className="button button-primary" href="/projects">
+              Explore my work <ArrowRight size={17} aria-hidden="true" />
+            </Link>
+            <Link className="text-link" href="/contact">
+              Get in touch <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+        <div className="hero-art" aria-label="Abstract illustration of a creative workspace">
+          <div className="art-orbit art-orbit-one" />
+          <div className="art-orbit art-orbit-two" />
+          <div className="art-sun" />
+          <div className="art-card">
+            <span className="art-card-label">A note to self</span>
+            <span className="art-card-title">Stay curious.<br />Build with care.</span>
+            <span className="art-card-rule" />
+            <span className="art-card-footer">MANOJ GOWDA <ArrowDownRight size={15} /></span>
+          </div>
+          <span className="art-caption">Ideas, in progress <span>↗</span></span>
+        </div>
+        <a className="scroll-cue" href="#explore" aria-label="Scroll to explore">
+          <span>SCROLL TO EXPLORE</span><ArrowDownRight size={15} aria-hidden="true" />
+        </a>
+      </section>
+
+      <section className="intro-strip">
+        <div className="section-wrap intro-inner">
+          <p className="eyebrow">A little about this space</p>
+          <p className="intro-statement">
+            A living collection of <span>work, words, and what I&apos;m learning</span> along the way.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="explore-section section-wrap" id="explore">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Find your way around</p>
+            <h2>A few things to explore.</h2>
+          </div>
+          <p className="section-heading-note">More is on the way. Start anywhere.</p>
         </div>
-      </main>
-    </div>
+        <div className="highlight-grid">
+          {highlights.map(({ number, title, description, href, icon: Icon }) => (
+            <Link className="highlight-card" href={href} key={number}>
+              <div className="highlight-top">
+                <span className="highlight-number">{number}</span>
+                <span className="highlight-icon"><Icon size={18} strokeWidth={1.7} aria-hidden="true" /></span>
+              </div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <span className="card-link">Take a look <ArrowRight size={15} aria-hidden="true" /></span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-contact">
+        <div className="section-wrap contact-banner">
+          <div>
+            <p className="eyebrow">Have something in mind?</p>
+            <h2>Good things start with a hello.</h2>
+          </div>
+          <Link className="button button-light" href="/contact">
+            Let&apos;s talk <ArrowUpRight size={17} aria-hidden="true" />
+          </Link>
+          <span className="banner-decoration" aria-hidden="true">✳</span>
+        </div>
+      </section>
+    </main>
   );
 }

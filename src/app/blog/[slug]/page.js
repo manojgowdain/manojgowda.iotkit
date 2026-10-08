@@ -49,6 +49,11 @@ export default async function BlogPostPage({ params }) {
         {post.cover_image_url && (
           <img className="article-cover" src={post.cover_image_url} alt="" />
         )}
+        {post.video_url && (
+          <video className="article-cover" src={post.video_url} controls preload="metadata">
+            Your browser does not support the video element.
+          </video>
+        )}
         <p className="eyebrow">
           {post.published_at ? new Date(post.published_at).toLocaleDateString("en", { year: "numeric", month: "long", day: "numeric" }) : "NOTES"}
         </p>

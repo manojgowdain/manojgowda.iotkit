@@ -37,6 +37,11 @@ export default async function ProjectDetailPage({ params }) {
         {project.image_url && (
           <img className="article-cover" src={project.image_url} alt="" />
         )}
+        {project.video_url && (
+          <video className="article-cover" src={project.video_url} controls preload="metadata">
+            Your browser does not support the video element.
+          </video>
+        )}
         <p className="eyebrow">PROJECT{project.is_featured ? " · FEATURED" : ""}</p>
         <h1>{project.title}</h1>
         <p className="article-excerpt">{project.summary}</p>

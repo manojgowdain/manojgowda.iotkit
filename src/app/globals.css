@@ -1316,6 +1316,57 @@ button:focus-visible {
   margin-bottom: 10px;
 }
 
+.media-url-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.media-url-field > label:first-child {
+  margin-top: 7px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.media-upload-label {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 8px 11px;
+  color: var(--foreground);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.media-upload-label:hover {
+  background: var(--surface-soft);
+}
+
+.media-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.media-file-input:focus-visible + .media-upload-status {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.media-upload-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 .label-hint {
   color: var(--muted);
   font-weight: 400;

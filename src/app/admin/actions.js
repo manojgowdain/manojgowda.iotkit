@@ -114,6 +114,7 @@ export async function saveContent(formData) {
       description: getText(formData, "description", 50000),
       technologies: getList(formData, "tags"),
       image_url: getText(formData, "image_url", 2000) || null,
+      video_url: getText(formData, "video_url", 2000) || null,
       project_url: getText(formData, "project_url", 2000) || null,
       source_url: getText(formData, "source_url", 2000) || null,
       is_featured: formData.get("is_featured") === "on",
@@ -124,6 +125,7 @@ export async function saveContent(formData) {
       body: getText(formData, "description", 50000),
       tags: getList(formData, "tags"),
       cover_image_url: getText(formData, "image_url", 2000) || null,
+      video_url: getText(formData, "video_url", 2000) || null,
       published_at: isPublished ? new Date().toISOString() : null,
     });
   }

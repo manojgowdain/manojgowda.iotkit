@@ -5,6 +5,7 @@ import { Button } from "../../../components/ui/button";
 import { requireAdmin } from "../../../lib/admin";
 import { saveContent, deleteContent } from "../actions";
 import DeleteContentButton from "../../../components/delete-content-button";
+import MediaUrlInput from "../../../components/media-url-input";
 
 export const metadata = {
   title: "Edit content",
@@ -52,8 +53,20 @@ export default async function EditContentPage({ searchParams }) {
           <textarea id="description" name="description" rows={12} maxLength={50000} defaultValue={description || ""} />
           <label htmlFor="tags">{kind === "project" ? "Technologies" : "Tags"} <span className="label-hint">(comma separated)</span></label>
           <input id="tags" name="tags" maxLength={2000} defaultValue={tags?.join(", ") || ""} />
-          <label htmlFor="image_url">{kind === "project" ? "Image URL" : "Cover image URL"}</label>
-          <input id="image_url" name="image_url" type="url" maxLength={2000} defaultValue={imageUrl || ""} />
+          <MediaUrlInput
+            id="image_url"
+            name="image_url"
+            label={kind === "project" ? "Project image" : "Cover image"}
+            defaultValue={imageUrl || ""}
+            mediaType="image"
+          />
+          <MediaUrlInput
+            id="video_url"
+            name="video_url"
+            label="Video"
+            defaultValue={item?.video_url || ""}
+            mediaType="video"
+          />
           {kind === "project" && (
             <>
               <label htmlFor="project_url">Project URL</label>

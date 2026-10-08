@@ -6,7 +6,7 @@ Personal portfolio and blog for `manojgowda.iotkit.in`, built with Next.js 16, R
 
 1. Install dependencies with `npm install`.
 2. Copy `.env.example` to `.env.local` and set the Supabase project URL and publishable/anon key.
-3. Apply `supabase/migrations/202610080001_create_content.sql` in the Supabase SQL Editor.
+3. Apply the SQL migrations in `supabase/migrations/` in filename order in the Supabase SQL Editor. The second migration adds optional video URLs and configures public media delivery with administrator-only uploads.
 4. Start the app with `npm run dev`.
 
 The site uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` when set and falls back to the legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Neither is a secret. Do not put a Supabase secret/service-role key in a `NEXT_PUBLIC_` variable or expose it to the browser.
@@ -28,7 +28,7 @@ The admin pages and every write action verify the signed-in user against `admin_
 
 ## Content
 
-The `/admin` panel can create, edit, publish/unpublish, and delete projects and blog posts. It includes per-item SEO title/description fields, tags/technologies, and project or cover image URLs. Blog post content is stored as plain text with line breaks preserved.
+The `/admin` panel can create, edit, publish/unpublish, and delete projects and blog posts. It includes per-item SEO title/description fields, tags/technologies, and external image/video URL fields. Admins can also upload images and videos up to 50 MB to the public `content-media` Supabase Storage bucket. Blog post content is stored as plain text with line breaks preserved.
 
 The public site includes:
 

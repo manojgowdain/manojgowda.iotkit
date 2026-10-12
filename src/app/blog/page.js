@@ -1,12 +1,35 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight, PenLine } from "lucide-react";
 import { getPublishedPosts } from "../../lib/content";
+import pageMetadata from "../../lib/seo";
 
-export const metadata = {
-  title: "Writing",
-  description: "Notes, ideas, and lessons learned by Manoj Gowda.",
-  alternates: { canonical: "/blog" },
-};
+export async function generateMetadata() {
+  const { items: posts, setupRequired } = await getPublishedPosts();
+  const count = setupRequired ? null : posts.length;
+  const description =
+    count === null
+      ? "Notes, ideas, and lessons learned by Manoj Gowda."
+      : count > 0
+        ? `${count} article${count === 1 ? "" : "s"} on software engineering, web development, and building for the internet. Notes, ideas, and lessons learned by Manoj Gowda.`
+        : "Notes, ideas, and lessons learned by Manoj Gowda — new articles coming soon.";
+
+  return pageMetadata({
+    title: "Writing",
+    description,
+    path: "/blog",
+    section: "Technology",
+    keywords: [
+      "Manoj Gowda blog",
+      "software engineering",
+      "React",
+      "Node.js",
+      "DevOps",
+      "AWS",
+      "web development",
+      "engineering notes",
+    ],
+  });
+}
 
 export default async function BlogPage() {
   const { items: posts, setupRequired } = await getPublishedPosts();

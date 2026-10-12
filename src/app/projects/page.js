@@ -1,12 +1,25 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Layers3 } from "lucide-react";
 import { getPublishedProjects } from "../../lib/content";
+import pageMetadata from "../../lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Projects",
-  description: "Projects and experiments by Manoj Gowda.",
-  alternates: { canonical: "/projects" },
-};
+  description:
+    "Projects and experiments by Manoj Gowda — web, mobile, IoT, and cloud products built with React, Node.js, and AWS.",
+  path: "/projects",
+  section: "Technology",
+  keywords: [
+    "Manoj Gowda projects",
+    "React projects",
+    "Node.js",
+    "AWS",
+    "IoT",
+    "Android",
+    "React Native",
+    "open source",
+  ],
+});
 
 export default async function ProjectsPage() {
   const { items: projects, setupRequired } = await getPublishedProjects();

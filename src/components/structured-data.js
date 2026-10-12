@@ -21,6 +21,7 @@ const personJsonLd = {
     "https://www.instagram.com/manojgowda.in",
     "https://github.com/manojgowdain",
     "https://manojgowda.iotkit.in",
+    "https://manojgowda.in",
   ],
   knowsAbout: [
     "Full Stack Development",

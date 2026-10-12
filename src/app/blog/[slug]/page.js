@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getPublishedPost } from "../../../lib/content";
+import pageMetadata, { siteMeta } from "../../../lib/seo";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -11,19 +12,16 @@ export async function generateMetadata({ params }) {
   const title = post.seo_title || post.title;
   const description = post.seo_description || post.excerpt;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: {
-      type: "article",
-      title,
-      description,
-      url: `/blog/${post.slug}`,
-      publishedTime: post.published_at || undefined,
-      images: post.cover_image_url ? [post.cover_image_url] : undefined,
-    },
-  };
+    path: `/blog/${post.slug}`,
+    image: post.cover_image_url || undefined,
+    type: "article",
+    publishedTime: post.published_at || undefined,
+    section: "Technology",
+    keywords: post.tags?.length ? post.tags : undefined,
+  });
 }
 
 export default async function BlogPostPage({ params }) {
@@ -38,8 +36,8 @@ export default async function BlogPostPage({ params }) {
     description: post.seo_description || post.excerpt,
     datePublished: post.published_at,
     image: post.cover_image_url || undefined,
-    author: { "@type": "Person", name: "Manoj Gowda" },
-    mainEntityOfPage: `https://manojgowda.iotkit.in/blog/${post.slug}`,
+    author: { "@type": "Person", name: "Manoj Gowda", url: siteMeta.siteUrl },
+    mainEntityOfPage: `${siteMeta.siteUrl}/blog/${post.slug}`,
   };
 
   return (

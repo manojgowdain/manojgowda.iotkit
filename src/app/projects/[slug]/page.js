@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { getPublishedProject } from "../../../lib/content";
+import pageMetadata from "../../../lib/seo";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -11,18 +12,15 @@ export async function generateMetadata({ params }) {
   const title = project.seo_title || project.title;
   const description = project.seo_description || project.summary;
 
-  return {
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: {
-      type: "article",
-      title,
-      description,
-      url: `/projects/${project.slug}`,
-      images: project.image_url ? [project.image_url] : undefined,
-    },
-  };
+    path: `/projects/${project.slug}`,
+    image: project.image_url || undefined,
+    type: "article",
+    section: "Technology",
+    keywords: project.technologies?.length ? project.technologies : undefined,
+  });
 }
 
 export default async function ProjectDetailPage({ params }) {

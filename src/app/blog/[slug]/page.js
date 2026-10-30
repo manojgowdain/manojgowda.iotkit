@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getPublishedPost } from "../../../lib/content";
@@ -11,16 +12,19 @@ export async function generateMetadata({ params }) {
 
   const title = post.seo_title || post.title;
   const description = post.seo_description || post.excerpt;
+  const imageUrl = post.cover_image_url || siteMeta.logoUrl;
 
   return pageMetadata({
     title,
     description,
     path: `/blog/${post.slug}`,
-    image: post.cover_image_url || undefined,
+    image: imageUrl,
     type: "article",
     publishedTime: post.published_at || undefined,
+    modifiedTime: post.updated_at || undefined,
     section: "Technology",
     keywords: post.tags?.length ? post.tags : undefined,
+    authors: ["Manoj Gowda"],
   });
 }
 
@@ -35,9 +39,22 @@ export default async function BlogPostPage({ params }) {
     headline: post.title,
     description: post.seo_description || post.excerpt,
     datePublished: post.published_at,
-    image: post.cover_image_url || undefined,
+    dateModified: post.updated_at,
+    image: post.cover_image_url || siteMeta.logoUrl,
     author: { "@type": "Person", name: "Manoj Gowda", url: siteMeta.siteUrl },
-    mainEntityOfPage: `${siteMeta.siteUrl}/blog/${post.slug}`,
+    publisher: {
+      "@type": "Person",
+      name: "Manoj Gowda",
+      url: siteMeta.siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: siteMeta.logoUrl,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteMeta.siteUrl}/blog/${post.slug}`,
+    },
   };
 
   return (
@@ -45,7 +62,16 @@ export default async function BlogPostPage({ params }) {
       <Link className="back-link" href="/blog"><ArrowLeft size={15} aria-hidden="true" /> All writing</Link>
       <article className="article-page">
         {post.cover_image_url && (
-          <img className="article-cover" src={post.cover_image_url} alt="" />
+          <div className="article-cover-wrapper">
+            <Image
+              className="article-cover"
+              src={post.cover_image_url}
+              alt={post.title}
+              width={800}
+              height={450}
+              priority
+            />
+          </div>
         )}
         {post.video_url && (
           <video className="article-cover" src={post.video_url} controls preload="metadata">

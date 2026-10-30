@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 const year = new Date().getFullYear();
@@ -9,7 +10,13 @@ export default function SiteFooter() {
       <div className="section-wrap footer-main">
         <div className="footer-brand">
           <Link className="wordmark footer-wordmark" href="/">
-            <img className="wordmark-logo" src="https://cdn.manojgowda.qzz.io/manojgowdaimg.svg" alt="" />
+            <Image
+              className="wordmark-logo"
+              src="https://cdn.manojgowda.qzz.io/manojgowdaimg.svg"
+              alt="Manoj Gowda"
+              width={32}
+              height={32}
+            />
             <span className="wordmark-name">manoj gowda</span>
           </Link>
           <p>A small corner of the internet for things worth building and sharing.</p>

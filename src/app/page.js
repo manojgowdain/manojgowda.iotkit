@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Layers3, PenLine } from "lucide-react";
+import Image from "next/image";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Layers3, PenLine, Briefcase, Server, Database, Globe } from "lucide-react";
 import { getPublishedPosts, getPublishedProjects } from "../lib/content";
 
 const highlights = [
@@ -24,6 +25,56 @@ const highlights = [
     href: "/contact",
     icon: Code2,
   },
+];
+
+const expertise = [
+  {
+    icon: Code2,
+    title: "Full-Stack Development",
+    description: "Building scalable web applications with React, Next.js, Node.js, and TypeScript. Focus on clean architecture, performance, and developer experience.",
+  },
+  {
+    icon: Server,
+    title: "DevOps & Cloud",
+    description: "Designing and operating cloud infrastructure on AWS. CI/CD pipelines, containerization with Docker, infrastructure as code, and observability.",
+  },
+  {
+    icon: Database,
+    title: "Data & Backend",
+    description: "Database design (PostgreSQL, DynamoDB), API development (REST, GraphQL), real-time systems, and event-driven architectures.",
+  },
+  {
+    icon: Globe,
+    title: "Mobile & IoT",
+    description: "Cross-platform mobile apps with React Native, Android native development, and IoT platform integrations for connected devices.",
+  },
+];
+
+const experience = [
+  {
+    role: "Team Lead & Software Engineer",
+    company: "Independent / Startup Engineer",
+    period: "2021 — Present",
+    details: "Leading end-to-end product development for early-stage startups. Architecture decisions, team mentorship, and hands-on delivery across web, mobile, and cloud.",
+  },
+  {
+    role: "Senior Software Engineer",
+    company: "Technology Companies",
+    period: "2017 — 2021",
+    details: "Built and scaled full-stack applications, designed microservices, and implemented DevOps practices. Worked across fintech, e-commerce, and SaaS domains.",
+  },
+  {
+    role: "Software Engineer",
+    company: "Early Career",
+    period: "2014 — 2017",
+    details: "Full-stack web development, Android applications, and backend services. Strong foundation in computer science principles and software craftsmanship.",
+  },
+];
+
+const technologies = [
+  "React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "AWS",
+  "Docker", "Kubernetes", "Terraform", "React Native", "Android", "GraphQL",
+  "Redis", "DynamoDB", "Prisma", "Tailwind CSS", "GitHub Actions",
 ];
 
 export default async function Home() {
@@ -56,8 +107,9 @@ export default async function Home() {
           <p className="eyebrow"><span className="status-dot" /> A personal corner of the internet</p>
           <h1>Making the web a little more <span>thoughtful.</span></h1>
           <p className="hero-description">
-            I&apos;m Manoj Gowda. This is where I share the projects I&apos;m working on,
-            the things I&apos;m learning, and ideas I hope are useful to someone else.
+            I&apos;m <strong>Manoj Gowda</strong>, a Team Lead & Software Engineer based in Bengaluru.
+            I build full-stack web applications, design cloud infrastructure, and write about the craft.
+            This is where I share the projects I&apos;m working on, the things I&apos;m learning, and ideas I hope are useful to someone else.
           </p>
           <div className="hero-actions">
             <Link className="button button-primary" href="/projects">
@@ -92,6 +144,80 @@ export default async function Home() {
             A living collection of <span>work, words, and what I&apos;m learning</span> along the way.
           </p>
         </div>
+      </section>
+
+      <section className="about-section section-wrap" id="about">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Who I am</p>
+            <h2>Software engineer.<br />Team lead.<br />Builder.</h2>
+          </div>
+        </div>
+        <div className="about-grid">
+          <div className="about-bio">
+            <p>
+              I&apos;ve been writing code professionally for over a decade. My journey started with Android and
+              backend services, evolved through full-stack web development, and now centers on leading
+              engineering teams and architecting systems that scale.
+            </p>
+            <p>
+              Today I work as an independent engineer helping startups go from idea to production. I care deeply
+              about clean code, thoughtful architecture, and building tools that make developers&apos; lives easier.
+              When I&apos;m not coding, I&apos;m probably reading about distributed systems, experimenting with new
+              frameworks, or sharing what I&apos;ve learned here.
+            </p>
+            <p>
+              <strong>Core strengths:</strong> Full-stack development (React, Next.js, Node.js), cloud infrastructure
+              (AWS, Docker, Terraform), DevOps culture, database design, and mentoring engineering teams.
+            </p>
+          </div>
+          <div className="about-experience">
+            <h3>Experience</h3>
+            <dl className="experience-list">
+              {experience.map((exp, i) => (
+                <div key={i} className="experience-item">
+                  <dt>
+                    <strong>{exp.role}</strong> <span className="exp-company">— {exp.company}</span>
+                  </dt>
+                  <dd className="exp-period">{exp.period}</dd>
+                  <dd className="exp-details">{exp.details}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section className="expertise-section section-wrap" id="expertise">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">What I do</p>
+            <h2>Areas of <span>expertise.</span></h2>
+          </div>
+        </div>
+        <div className="expertise-grid">
+          {expertise.map((item, i) => (
+            <article className="expertise-card" key={i}>
+              <span className="expertise-icon"><item.icon size={22} strokeWidth={1.7} aria-hidden="true" /></span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="tech-section section-wrap" id="technologies">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Tools of the trade</p>
+            <h2>Technologies <span>I work with.</span></h2>
+          </div>
+        </div>
+        <ul className="tech-tag-list" aria-label="Technologies">
+          {technologies.map((tech) => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
       </section>
 
       {contentSetupRequired && (

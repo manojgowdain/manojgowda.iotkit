@@ -34,37 +34,68 @@ export default function pageMetadata({
   image,
   type = "website",
   publishedTime,
+  modifiedTime,
   section,
   keywords,
+  authors = ["Manoj Gowda"],
+  noIndex = false,
+  noFollow = false,
 } = {}) {
   const fullTitle = title ? `${title} | Manoj Gowda` : siteMeta.titleDefault;
   const metaDescription = description || siteMeta.descriptionDefault;
   const url = `${siteUrl}${path}`;
   const imageUrl = image || siteMeta.logoUrl;
+  const canonicalUrl = url;
+
+  const robots = {
+    index: !noIndex,
+    follow: !noFollow,
+    googleBot: {
+      index: !noIndex,
+      follow: !noFollow,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  };
 
   const metadata = {
-    title,
+    title: title || siteMeta.titleDefault,
     description: metaDescription,
-    alternates: { canonical: path },
+    alternates: { canonical: canonicalUrl },
     keywords,
+    authors,
+    robots,
     openGraph: {
       type,
-      url,
+      url: canonicalUrl,
       title: fullTitle,
       description: metaDescription,
       siteName: siteMeta.siteName,
-      images: [{ url: imageUrl }],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title || siteMeta.titleDefault,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description: metaDescription,
       images: [imageUrl],
+      creator: "@manojgowdain",
+    },
+    other: {
+      "social:profile": socialProfiles,
     },
   };
 
   if (section) metadata.openGraph.section = section;
   if (publishedTime) metadata.openGraph.publishedTime = publishedTime;
+  if (modifiedTime) metadata.openGraph.modifiedTime = modifiedTime;
 
   return metadata;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./theme-toggle";
 
@@ -17,7 +18,13 @@ export default function SiteHeader() {
     <header className="site-header">
       <div className="header-inner">
         <Link className="wordmark" href="/" aria-label="Manoj Gowda home">
-          <img className="wordmark-logo" src="https://cdn.manojgowda.qzz.io/manojgowdaimg.svg" alt="" />
+          <Image
+            className="wordmark-logo"
+            src="https://cdn.manojgowda.qzz.io/manojgowdaimg.svg"
+            alt="Manoj Gowda"
+            width={32}
+            height={32}
+          />
           <span className="wordmark-name">manoj gowda</span>
         </Link>
         <nav className="main-nav" aria-label="Main navigation">

@@ -1,16 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Globe2, MessageCircle } from "lucide-react";
+import pageMetadata from "../../lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Contact",
   description: "Get in touch with Manoj Gowda about a project, an idea, or just to say hello.",
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Contact Manoj Gowda",
-    description: "Have a project or an idea? Get in touch with Manoj.",
-    url: "/contact",
-  },
-};
+  path: "/contact",
+  section: "Contact",
+  noIndex: false,
+  noFollow: false,
+});
 
 export default function ContactPage() {
   return (

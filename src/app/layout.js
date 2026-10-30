@@ -30,6 +30,7 @@ export const metadata = {
   icons: {
     icon: [{ url: logoUrl, type: "image/svg+xml" }],
     shortcut: [logoUrl],
+    apple: [logoUrl],
   },
   // Verified social profiles, surfaced as <link rel="me"> so Google can
   // expand the Knowledge Graph entry from the site itself.
@@ -48,13 +49,32 @@ export const metadata = {
     siteName: "Manoj Gowda",
     title: "Manoj Gowda — Developer, builder, curious human",
     description: "A collection of projects, writing, and ideas about building for the web.",
-    images: [{ url: logoUrl }],
+    images: [
+      {
+        url: logoUrl,
+        width: 1200,
+        height: 630,
+        alt: "Manoj Gowda — Developer, builder, curious human",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Manoj Gowda — Developer, builder, curious human",
     description: "A collection of projects, writing, and ideas about building for the web.",
     images: [logoUrl],
+    creator: "@manojgowdain",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

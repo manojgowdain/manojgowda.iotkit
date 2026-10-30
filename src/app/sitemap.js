@@ -50,7 +50,6 @@ export default async function sitemap() {
     lastModified: project.updated_at ? new Date(project.updated_at) : lastModified,
     changeFrequency: "monthly",
     priority: project.is_featured ? 0.7 : 0.6,
-    images: project.image_url ? [{ url: project.image_url, title: project.title }] : [],
   }));
 
   const postUrls = posts.map((post) => ({
@@ -58,7 +57,6 @@ export default async function sitemap() {
     lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,
     changeFrequency: "monthly",
     priority: 0.7,
-    images: post.cover_image_url ? [{ url: post.cover_image_url, title: post.title }] : [],
   }));
 
   return [...staticRoutes, ...projectUrls, ...postUrls];

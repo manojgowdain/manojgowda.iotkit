@@ -1,4 +1,9 @@
-const siteUrl = "https://manojgowda.iotkit.in";
+/**
+ * robots.txt configuration for Next.js 16 App Router
+ * Returns a Robots configuration that Next.js converts to the robots.txt file
+ * @returns {import('next').MetadataRoute.Robots}
+ */
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://manojgowda.iotkit.in";
 
 export default function robots() {
   return {
@@ -8,9 +13,7 @@ export default function robots() {
         allow: [
           "/",
           "/projects",
-          "/projects/",
           "/blog",
-          "/blog/",
           "/contact",
           "/sitemap.xml",
         ],
@@ -18,10 +21,12 @@ export default function robots() {
           "/admin",
           "/admin/",
           "/admin/*",
+          "/api",
           "/api/",
+          "/_next",
           "/_next/",
+          "/static",
           "/static/",
-          "/*.json$",
         ],
       },
       {
@@ -29,9 +34,7 @@ export default function robots() {
         allow: [
           "/",
           "/projects",
-          "/projects/",
           "/blog",
-          "/blog/",
           "/contact",
           "/sitemap.xml",
         ],
@@ -39,6 +42,7 @@ export default function robots() {
           "/admin",
           "/admin/",
           "/admin/*",
+          "/api",
           "/api/",
         ],
       },
@@ -47,20 +51,18 @@ export default function robots() {
         allow: [
           "/",
           "/projects",
-          "/projects/",
           "/blog",
-          "/blog/",
           "/contact",
         ],
         disallow: [
           "/admin",
           "/admin/",
           "/admin/*",
+          "/api",
           "/api/",
         ],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
-    host: siteUrl,
   };
 }

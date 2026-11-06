@@ -2,8 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { getPublishedProject } from "../../../lib/content";
-import pageMetadata from "../../../lib/seo";
+import { getPublishedProjectsForStatic, getPublishedProject } from "../../../lib/content";
+import pageMetadata, { siteMeta } from "../../../lib/seo";
+
+export async function generateStaticParams() {
+  const { items: projects } = await getPublishedProjectsForStatic();
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -12,7 +19,7 @@ export async function generateMetadata({ params }) {
 
   const title = project.seo_title || project.title;
   const description = project.seo_description || project.summary;
-  const imageUrl = project.image_url || "https://cdn.manojgowda.qzz.io/manojgowdaimg.svg";
+  const imageUrl = project.image_url || siteMeta.logoUrl;
 
   return pageMetadata({
     title,

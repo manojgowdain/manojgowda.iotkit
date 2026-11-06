@@ -2,8 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getPublishedPost } from "../../../lib/content";
+import { getPublishedPostsForStatic, getPublishedPost } from "../../../lib/content";
 import pageMetadata, { siteMeta } from "../../../lib/seo";
+
+export async function generateStaticParams() {
+  const { items: posts } = await getPublishedPostsForStatic();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

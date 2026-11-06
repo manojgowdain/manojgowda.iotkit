@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Code2, Layers3, PenLine, Briefcase, Server, Database, Globe } from "lucide-react";
 import { getPublishedPosts, getPublishedProjects } from "../lib/content";
+import pageMetadata from "../lib/seo";
+import { descriptions, keywords } from "../seo/index";
 
 const highlights = [
   {
@@ -76,6 +78,16 @@ const technologies = [
   "Docker", "Kubernetes", "Terraform", "React Native", "Android", "GraphQL",
   "Redis", "DynamoDB", "Prisma", "Tailwind CSS", "GitHub Actions",
 ];
+
+export async function generateMetadata() {
+  return pageMetadata({
+    title: "Home",
+    description: descriptions.homepage[0],
+    path: "/",
+    keywords: keywords.primary,
+    section: "Technology",
+  });
+}
 
 export default async function Home() {
   const [projectsResult, postsResult] = await Promise.all([getPublishedProjects(), getPublishedPosts()]);

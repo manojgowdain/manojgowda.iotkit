@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Globe2, MessageCircle } from "lucide-react";
 import pageMetadata from "../../lib/seo";
+import { descriptions, keywords } from "../../seo/index";
 
 export const metadata = pageMetadata({
   title: "Contact",

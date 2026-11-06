@@ -8,6 +8,9 @@
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://manojgowda.iotkit.in";
 const logoUrl = "https://cdn.manojgowda.qzz.io/manojgowdaimg.svg";
 
+// Import centralized SEO database
+import { keywords, descriptions } from "../seo/index";
+
 export const siteMeta = {
   siteName: "Manoj Gowda",
   siteUrl,
@@ -27,6 +30,14 @@ export const socialProfiles = [
   "https://manojgowda.in",
 ];
 
+// Export centralized SEO database for external use
+export { keywords, descriptions };
+
+// Helper to normalize URL - remove trailing slash for consistency
+function normalizeUrl(url) {
+  return url.replace(/\/+$/, "") || "/";
+}
+
 export default function pageMetadata({
   title,
   description,
@@ -43,9 +54,8 @@ export default function pageMetadata({
 } = {}) {
   const fullTitle = title ? `${title} | Manoj Gowda` : siteMeta.titleDefault;
   const metaDescription = description || siteMeta.descriptionDefault;
-  const url = `${siteUrl}${path}`;
+  const url = normalizeUrl(`${siteUrl}${path}`);
   const imageUrl = image || siteMeta.logoUrl;
-  const canonicalUrl = url;
 
   const robots = {
     index: !noIndex,
@@ -62,13 +72,18 @@ export default function pageMetadata({
   const metadata = {
     title: title || siteMeta.titleDefault,
     description: metaDescription,
-    alternates: { canonical: canonicalUrl },
+    alternates: {
+      canonical: url,
+      languages: {
+        en: url,
+      },
+    },
     keywords,
     authors,
     robots,
     openGraph: {
       type,
-      url: canonicalUrl,
+      url,
       title: fullTitle,
       description: metaDescription,
       siteName: siteMeta.siteName,

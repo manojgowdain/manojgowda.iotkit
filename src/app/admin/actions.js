@@ -8,6 +8,7 @@ import { requireAdmin } from "../../lib/admin";
 function getTable(kind) {
   if (kind === "project") return "projects";
   if (kind === "post") return "posts";
+  if (kind === "job") return "jobs";
   throw new Error("Choose a valid content type.");
 }
 

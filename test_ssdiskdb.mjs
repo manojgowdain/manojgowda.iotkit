@@ -1,0 +1,14 @@
+import { connect } from 'ssdiskdb';
+const db = await connect({ path: '/tmp/ssdb-test' });
+console.log('DB methods:', Object.keys(db));
+console.log('set:', typeof db.set);
+console.log('get:', typeof db.get);
+console.log('delete:', typeof db.delete);
+console.log('keys:', typeof db.keys);
+console.log('values:', typeof db.values);
+console.log('entries:', typeof db.entries);
+console.log('clear:', typeof db.clear);
+await db.set('test', { hello: 'world' });
+const val = await db.get('test');
+console.log('Value:', val);
+await db.close();

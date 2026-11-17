@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
@@ -29,12 +31,23 @@ export default function SiteFooter() {
         </div>
         <div className="footer-column">
           <span className="footer-label">ELSEWHERE</span>
-          <a href="https://manojgowda.in" target="_blank" rel="noreferrer">
-            Main website <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
-          <a href="https://manojgowda.in/contact" target="_blank" rel="noreferrer">
-            Contact Manoj <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
+          <div className="social-links">
+            <a href="https://manojgowda.in" target="_blank" rel="noreferrer">
+              Main website <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+            <a href="https://manojgowda.in/contact" target="_blank" rel="noreferrer">
+              Contact Manoj <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+            <a href="https://manojgowda.in/linkedin" target="_blank" rel="noreferrer">
+              LinkedIn <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+            <a href="https://manojgowda.in/github" target="_blank" rel="noreferrer">
+              GitHub <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+            <a href="https://manojgowda.in/instagram" target="_blank" rel="noreferrer">
+              Instagram <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </div>
       <div className="section-wrap footer-bottom">

@@ -223,7 +223,24 @@ button:focus-visible {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 31px;
+  gap: 20px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.nav-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--line);
+  margin-inline: 4px;
+  flex-shrink: 0;
 }
 
 .nav-link {
@@ -231,11 +248,34 @@ button:focus-visible {
   font-size: 13px;
   font-weight: 500;
   transition: color 150ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-link:hover,
 .nav-link-active {
   color: var(--foreground);
+}
+
+.profile-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.profile-link {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 150ms ease, opacity 150ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.profile-link:hover {
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 .theme-toggle {
@@ -1412,14 +1452,31 @@ button:focus-visible {
 
   .header-inner {
     min-height: 70px;
+    gap: 10px;
   }
 
   .main-nav {
-    gap: 18px;
+    gap: 8px;
+  }
+
+  .nav-group {
+    gap: 8px;
+  }
+
+  .profile-links {
+    gap: 6px;
+  }
+
+  .profile-link {
+    font-size: 9px;
   }
 
   .nav-link {
-    font-size: 12px;
+    font-size: 10px;
+  }
+
+  .nav-separator {
+    height: 14px;
   }
 
   .hero {

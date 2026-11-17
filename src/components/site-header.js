@@ -5,10 +5,21 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./theme-toggle";
 
-const links = [
+const navLinks = [
+  { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Writing" },
   { href: "/contact", label: "Contact" },
+];
+
+const profileLinks = [
+  { href: "https://manojgowda.in", label: "Main website" },
+  { href: "https://manojgowda.in/contact", label: "Contact" },
+  { href: "https://manojgowda.in/linkedin", label: "LinkedIn" },
+  { href: "https://manojgowda.in/github", label: "GitHub" },
+  { href: "https://manojgowda.in/instagram", label: "Instagram" },
+  { href: "https://manojgowda.in/skills", label: "Skills" },
+  { href: "https://manojgowda.in/experience", label: "Experience" },
 ];
 
 export default function SiteHeader() {
@@ -28,17 +39,34 @@ export default function SiteHeader() {
           <span className="wordmark-name">manoj gowda</span>
         </Link>
         <nav className="main-nav" aria-label="Main navigation">
-          {links.map(({ href, label }) => (
-            <Link
-              aria-current={pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined}
-              className={`nav-link${pathname === href || pathname.startsWith(`${href}/`) ? " nav-link-active" : ""}`}
-              href={href}
-              key={href}
-            >
-              {label}
-            </Link>
-          ))}
+          <div className="nav-group">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                aria-current={pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined}
+                className={`nav-link${pathname === href || pathname.startsWith(`${href}/`) ? " nav-link-active" : ""}`}
+                href={href}
+                key={href}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          <span className="nav-separator" />
           <ThemeToggle />
+          <span className="nav-separator" />
+          <div className="profile-links">
+            {profileLinks.map(({ href, label }) => (
+              <a
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="profile-link"
+                key={href}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
         </nav>
       </div>
     </header>

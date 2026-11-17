@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "../lib/client";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
@@ -10,6 +9,7 @@ export default function MediaUrlInput({ id, name, label, defaultValue = "", medi
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Upload file via API
   async function uploadFile(event) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -28,22 +28,27 @@ export default function MediaUrlInput({ id, name, label, defaultValue = "", medi
     setUploading(true);
     setMessage("");
     try {
-      const supabase = createClient();
-      const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
-      const path = `${mediaType}/${crypto.randomUUID()}-${safeName}`;
-      const { data, error } = await supabase.storage
-        .from("content-media")
-        .upload(path, file, { contentType: file.type, upsert: false });
+      // Use FormData to upload file to API endpoint
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("path", `${mediaType}/${crypto.randomUUID()}-${file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-")}`);
+      formData.append("bucket", "content-media");
 
-      if (error) throw error;
+      const response = await fetch("/api/storage/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-      const { data: publicData } = supabase.storage
-        .from("content-media")
-        .getPublicUrl(data.path);
-      setUrl(publicData.publicUrl);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Upload failed");
+      }
+
+      setUrl(result.publicUrl);
       setMessage("Uploaded. Save the content to keep this URL.");
     } catch (error) {
-      console.error("Unable to upload content media:", error);
+      console.error("Upload failed:", error);
       setMessage(
         error.message?.includes("Bucket not found")
           ? "Storage is not set up yet. Apply the content-media migration, or paste an external URL."
@@ -69,7 +74,7 @@ export default function MediaUrlInput({ id, name, label, defaultValue = "", medi
         onChange={(event) => setUrl(event.target.value)}
       />
       <label className="media-upload-label" htmlFor={fileId}>
-        {uploading ? "Uploading…" : `Upload ${mediaType} to Supabase Storage`}
+        {uploading ? "Uploading…" : `Upload ${mediaType} via API`}
       </label>
       <input
         className="media-file-input"

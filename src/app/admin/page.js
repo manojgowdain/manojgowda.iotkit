@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, FileText, Layers3, Plus } from "lucide-react";
+import { ArrowUpRight, FileText, Layers3, Plus, Briefcase } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { requireAdmin } from "../../lib/admin";
 import { signOut } from "./actions";
@@ -11,17 +11,20 @@ export const metadata = {
 
 export default async function AdminPage() {
   const { supabase, user } = await requireAdmin();
-  const [projectsResult, postsResult] = await Promise.all([
+  const [projectsResult, postsResult, jobsResult] = await Promise.all([
     supabase.from("projects").select("id,title,slug,is_published,updated_at").order("updated_at", { ascending: false }),
     supabase.from("posts").select("id,title,slug,is_published,updated_at").order("updated_at", { ascending: false }),
+    supabase.from("jobs").select("id,title,slug,status,is_published,is_open,updated_at").order("updated_at", { ascending: false }),
   ]);
 
   if (projectsResult.error) throw new Error("Unable to load projects for the admin panel.", { cause: projectsResult.error });
   if (postsResult.error) throw new Error("Unable to load posts for the admin panel.", { cause: postsResult.error });
+  if (jobsResult.error) throw new Error("Unable to load jobs for the admin panel.", { cause: jobsResult.error });
 
   const sections = [
     { kind: "project", label: "Projects", items: projectsResult.data, icon: Layers3 },
     { kind: "post", label: "Blog posts", items: postsResult.data, icon: FileText },
+    { kind: "job", label: "Jobs", items: jobsResult.data || [], icon: Briefcase },
   ];
 
   return (
@@ -49,12 +52,19 @@ export default async function AdminPage() {
               {items.map((item) => (
                 <li key={item.id}>
                   <div className="admin-item-copy">
-                    <span className="admin-item-status">
-                      <i className={item.is_published ? "published" : ""} />
-                      {item.is_published ? "Published" : "Draft"}
-                    </span>
+                    {kind === "job" ? (
+                      <span className="admin-item-status">
+                        <i className={item.is_published ? "published" : ""} />
+                        {item.status || item.is_published ? "Published" : "Draft"}
+                      </span>
+                    ) : (
+                      <span className="admin-item-status">
+                        <i className={item.is_published ? "published" : ""} />
+                        {item.is_published ? "Published" : "Draft"}
+                      </span>
+                    )}
                     <strong>{item.title}</strong>
-                    <span className="admin-item-slug">/{kind === "post" ? "blog" : "projects"}/{item.slug}</span>
+                    <span className="admin-item-slug">/{kind === "post" ? "blog" : kind === "job" ? "jobs" : "projects"}/{item.slug}</span>
                   </div>
                   <Link className="admin-edit-link" href={`/admin/edit?kind=${kind}&id=${item.id}`}>
                     Edit <ArrowUpRight size={14} aria-hidden="true" />

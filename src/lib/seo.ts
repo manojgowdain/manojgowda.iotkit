@@ -1,9 +1,13 @@
-// Shared SEO metadata builder. Every page should build its metadata through
-// `pageMetadata` so title, description, canonical, Open Graph, and Twitter
-// cards stay consistent with the site branding in layout.js.
-//
-// `path` is relative to the site root (e.g. "/projects", "/blog/hello-world").
-// `image` is an optional absolute URL; when omitted the site logo is used.
+/**
+ * Shared SEO metadata builder.
+ * Every page should build its metadata through `pageMetadata` so title,
+ * description, canonical, Open Graph, and Twitter cards stay consistent.
+ *
+ * `path` is relative to the site root (e.g. "/projects", "/blog/hello-world").
+ * `image` is an optional absolute URL; when omitted the site logo is used.
+ */
+
+import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://manojgowda.iotkit.in";
 const logoUrl = "https://cdn.manojgowda.qzz.io/manojgowdaimg.svg";
@@ -34,10 +38,28 @@ export const socialProfiles = [
 export { keywords, descriptions };
 
 // Helper to normalize URL - remove trailing slash for consistency
-function normalizeUrl(url) {
+function normalizeUrl(url: string): string {
   return url.replace(/\/+$/, "") || "/";
 }
 
+export interface PageMetadataOptions {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
+  keywords?: string[];
+  authors?: string[];
+  noIndex?: boolean;
+  noFollow?: boolean;
+}
+
+/**
+ * Build SEO metadata object for Next.js Metadata API.
+ */
 export default function pageMetadata({
   title,
   description,
@@ -51,7 +73,7 @@ export default function pageMetadata({
   authors = ["Manoj Gowda"],
   noIndex = false,
   noFollow = false,
-} = {}) {
+}: PageMetadataOptions = {}): Metadata {
   const fullTitle = title ? `${title} | Manoj Gowda` : siteMeta.titleDefault;
   const metaDescription = description || siteMeta.descriptionDefault;
   const url = normalizeUrl(`${siteUrl}${path}`);
@@ -64,12 +86,32 @@ export default function pageMetadata({
       index: !noIndex,
       follow: !noFollow,
       "max-video-preview": -1,
-      "max-image-preview": "large",
+      "max-image-preview": "large" as const,
       "max-snippet": -1,
     },
   };
 
-  const metadata = {
+  const og: Metadata['openGraph'] = {
+    type,
+    url,
+    title: fullTitle,
+    description: metaDescription,
+    siteName: siteMeta.siteName,
+    images: [
+      {
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: title || siteMeta.titleDefault,
+      },
+    ],
+  };
+
+  if (section) (og as any).section = section;
+  if (publishedTime) (og as any).publishedTime = publishedTime;
+  if (modifiedTime) (og as any).modifiedTime = modifiedTime;
+
+  const metadata: Metadata = {
     title: title || siteMeta.titleDefault,
     description: metaDescription,
     alternates: {
@@ -79,23 +121,9 @@ export default function pageMetadata({
       },
     },
     keywords,
-    authors,
+    authors: authors.map(a => ({ name: a })),
     robots,
-    openGraph: {
-      type,
-      url,
-      title: fullTitle,
-      description: metaDescription,
-      siteName: siteMeta.siteName,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title || siteMeta.titleDefault,
-        },
-      ],
-    },
+    openGraph: og,
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
@@ -107,10 +135,6 @@ export default function pageMetadata({
       "social:profile": socialProfiles,
     },
   };
-
-  if (section) metadata.openGraph.section = section;
-  if (publishedTime) metadata.openGraph.publishedTime = publishedTime;
-  if (modifiedTime) metadata.openGraph.modifiedTime = modifiedTime;
 
   return metadata;
 }

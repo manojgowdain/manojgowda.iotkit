@@ -1,0 +1,33 @@
+import { connect } from 'ssdiskdb';
+const db = await connect({ path: '/tmp/ssdb-test2' });
+console.log('DB methods:', Object.keys(db));
+console.log('encryptionKey:', typeof db.encryptionKey);
+console.log('db:', typeof db.db);
+// Test all methods
+console.log('set:', typeof db.set);
+console.log('get:', typeof db.get);
+console.log('delete:', typeof db.delete);
+console.log('has:', typeof db.has);
+console.log('batch:', typeof db.batch);
+console.log('keys:', typeof db.keys);
+console.log('values:', typeof db.values);
+console.log('entries:', typeof db.entries);
+console.log('clear:', typeof db.clear);
+console.log('getMany:', typeof db.getMany);
+console.log('setMany:', typeof db.setMany);
+console.log('deleteMany:', typeof db.deleteMany);
+console.log('close:', typeof db.close);
+
+await db.set('test1', { hello: 'world' });
+await db.set('test2', { foo: 'bar' });
+console.log('get test1:', await db.get('test1'));
+console.log('get test2:', await db.get('test2'));
+console.log('has test1:', await db.has('test1'));
+console.log('keys:', [...(await db.keys())]);
+console.log('values:', [...(await db.values())]);
+console.log('entries:', [...(await db.entries())]);
+await db.delete('test1');
+console.log('after delete has test1:', await db.has('test1'));
+await db.clear();
+console.log('after clear keys:', [...(await db.keys())]);
+await db.close();

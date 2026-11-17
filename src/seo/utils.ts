@@ -5,7 +5,7 @@
  * based on the centralized SEO database.
  */
 
-import { keywords, descriptions } from './index';
+import { keywords, descriptions, getDescription } from './index';
 import type { Metadata } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://manojgowda.iotkit.in';
@@ -25,7 +25,7 @@ export function getPageKeywords(
  * Get page-specific description
  */
 export function getPageDescription(category: keyof typeof descriptions): string {
-  return descriptions.getDescription(category);
+  return getDescription(category);
 }
 
 /**
@@ -56,7 +56,7 @@ export function getPageMetadata(options: {
     noIndex = false,
   } = options;
 
-  const defaultDescription = descriptions.getDescription('homepage');
+  const defaultDescription = getDescription('homepage');
   const metaDescription = customDescription || defaultDescription;
   const canonicalUrl = `${siteUrl}${path}`;
   const imageUrl = image || descriptions.homepage[0];
@@ -123,7 +123,7 @@ export function getPageMetadata(options: {
     }),
     ...(modifiedTime && {
       openGraph: {
-        ...{ modifiedTime },
+        ...{ type, publishedTime, modifiedTime },
       },
     }),
   };

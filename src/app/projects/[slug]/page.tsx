@@ -2,8 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import Script from "next/script";
 import { getPublishedProjectsForStatic, getPublishedProject } from "../../../lib/content";
 import pageMetadata, { siteMeta } from "../../../lib/seo";
+import { generateSoftwareApplicationSchema, generateBreadcrumbSchema } from "../../../lib/structured-data";
+import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const { items: projects } = await getPublishedProjectsForStatic();
@@ -12,7 +15,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }): Promise<Metadata> {
   const { slug } = await params;
   const project = await getPublishedProject(slug);
   if (!project) return { title: "Project not found", robots: { index: false } };
@@ -38,32 +41,23 @@ export default async function ProjectDetailPage({ params }) {
   const project = await getPublishedProject(slug);
   if (!project) notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+  const jsonLd = generateSoftwareApplicationSchema({
     name: project.title,
     description: project.seo_description || project.summary,
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Web, Cloud",
-    image: project.image_url || "https://cdn.manojgowda.qzz.io/manojgowdaimg.svg",
-    author: { "@type": "Person", name: "Manoj Gowda", url: "https://manojgowda.iotkit.in" },
-    publisher: {
-      "@type": "Person",
-      name: "Manoj Gowda",
-      url: "https://manojgowda.iotkit.in",
-    },
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-    },
-    featureList: project.technologies?.length ? project.technologies : [],
-    url: project.project_url || `${"https://manojgowda.iotkit.in"}/projects/${project.slug}`,
-    codeRepository: project.source_url || undefined,
+    image: project.image_url || siteMeta.logoUrl,
+    url: `${siteMeta.siteUrl}/projects/${project.slug}`,
+    technologies: project.technologies || [],
     datePublished: project.created_at,
     dateModified: project.updated_at,
-  };
+    projectUrl: project.project_url,
+    sourceUrl: project.source_url,
+  });
+
+  const breadcrumbs = generateBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Projects", url: `${siteMeta.siteUrl}/projects` },
+    { name: project.title, url: `${siteMeta.siteUrl}/projects/${project.slug}` },
+  ]);
 
   return (
     <main className="page-main section-wrap">
@@ -99,7 +93,12 @@ export default async function ProjectDetailPage({ params }) {
           {project.project_url && <a className="button button-primary" href={project.project_url} target="_blank" rel="noreferrer">Visit project <ArrowUpRight size={15} aria-hidden="true" /></a>}
           {project.source_url && <a className="text-link" href={project.source_url} target="_blank" rel="noreferrer">View source <ArrowUpRight size={15} aria-hidden="true" /></a>}
         </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+        <Script
+          id="project-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify([jsonLd, breadcrumbs]).replace(/</g, "\\u003c") }}
+          strategy="lazyOnload"
+        />
       </article>
     </main>
   );
